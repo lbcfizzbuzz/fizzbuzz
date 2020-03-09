@@ -1,0 +1,4 @@
+{
+    "db_type": "mysql",
+    "dsn": "root:iamsecure@/fizzbuzz"
+}
