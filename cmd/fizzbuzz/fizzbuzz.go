@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
-	conf "github.com/samyy321/fizzbuzz/config"
-	ds "github.com/samyy321/fizzbuzz/datastore"
-	serv "github.com/samyy321/fizzbuzz/server"
+	conf "github.com/lbcfizzbuzz/fizzbuzz/config"
+	ds "github.com/lbcfizzbuzz/fizzbuzz/datastore"
+	serv "github.com/lbcfizzbuzz/fizzbuzz/server"
 )
 
 func main() {

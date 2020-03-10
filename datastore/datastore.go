@@ -2,8 +2,8 @@ package datastore
 
 import (
 	"errors"
-	cfg "github.com/samyy321/fizzbuzz/config"
-	"github.com/samyy321/fizzbuzz/models"
+	cfg "github.com/lbcfizzbuzz/fizzbuzz/config"
+	"github.com/lbcfizzbuzz/fizzbuzz/models"
 )
 
 // Datastore represents the methods that has to be implemented by any new datastore system

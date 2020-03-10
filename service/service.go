@@ -1,9 +1,9 @@
 package service
 
 import (
-	"github.com/samyy321/fizzbuzz/core"
-	"github.com/samyy321/fizzbuzz/datastore"
-	"github.com/samyy321/fizzbuzz/models"
+	"github.com/lbcfizzbuzz/fizzbuzz/core"
+	"github.com/lbcfizzbuzz/fizzbuzz/datastore"
+	"github.com/lbcfizzbuzz/fizzbuzz/models"
 )
 
 // GetMostUsedQueryString returns the most used requests from a datastore

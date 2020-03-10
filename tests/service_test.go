@@ -2,10 +2,10 @@ package tests
 
 import (
 	_ "github.com/go-sql-driver/mysql"
-	conf "github.com/samyy321/fizzbuzz/config"
-	ds "github.com/samyy321/fizzbuzz/datastore"
-	"github.com/samyy321/fizzbuzz/models"
-	"github.com/samyy321/fizzbuzz/service"
+	conf "github.com/lbcfizzbuzz/fizzbuzz/config"
+	ds "github.com/lbcfizzbuzz/fizzbuzz/datastore"
+	"github.com/lbcfizzbuzz/fizzbuzz/models"
+	"github.com/lbcfizzbuzz/fizzbuzz/service"
 	"testing"
 )
 

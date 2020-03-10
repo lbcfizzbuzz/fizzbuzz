@@ -2,9 +2,9 @@ package server
 
 import (
 	"encoding/json"
-	ds "github.com/samyy321/fizzbuzz/datastore"
-	models "github.com/samyy321/fizzbuzz/models"
-	"github.com/samyy321/fizzbuzz/service"
+	ds "github.com/lbcfizzbuzz/fizzbuzz/datastore"
+	models "github.com/lbcfizzbuzz/fizzbuzz/models"
+	"github.com/lbcfizzbuzz/fizzbuzz/service"
 	"log"
 	"net/http"
 	"net/url"

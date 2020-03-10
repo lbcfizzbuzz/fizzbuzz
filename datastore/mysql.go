@@ -2,7 +2,7 @@ package datastore
 
 import (
 	"database/sql"
-	"github.com/samyy321/fizzbuzz/models"
+	"github.com/lbcfizzbuzz/fizzbuzz/models"
 )
 
 // MySQLDatastore a datastore using a MySQL driver

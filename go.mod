@@ -1,4 +1,4 @@
-module github.com/samyy321/fizzbuzz
+module github.com/lbcfizzbuzz/fizzbuzz
 
 go 1.13
 

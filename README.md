@@ -5,7 +5,7 @@ A simple fizzbuzz REST server written in Go
 - Go 1.13 (https://golang.org/doc/install)
 - Docker (https://docs.docker.com/install/)
 ## Installation
-Please first install the database given at: https://github.com/samyy321/fizzbuzz_db.
+Please first install the database given at: https://github.com/lbcfizzbuzz/fizzbuzz_db.
 
 Go to `cmd/fizzbuzz` and build the project:
 
@@ -25,7 +25,7 @@ The `statistics` endpoint accepts no parameters, for example `http://localhost:8
 ## Tests
 To run the tests just type:
 ```
-$  go test github.com/samyy321/fizzbuzz/tests
+$  go test github.com/lbcfizzbuzz/fizzbuzz/tests
 ```
 ## Project structure
 - `cmd/fizzbuzz` contains the main

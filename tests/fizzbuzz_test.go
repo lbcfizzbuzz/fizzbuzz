@@ -1,7 +1,7 @@
 package tests
 
 import (
-	"github.com/samyy321/fizzbuzz/core"
+	"github.com/lbcfizzbuzz/fizzbuzz/core"
 	"testing"
 )
 
