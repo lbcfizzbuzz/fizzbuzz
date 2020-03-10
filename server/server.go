@@ -2,9 +2,9 @@ package server
 
 import (
 	"encoding/json"
-	"github.com/samyy321/fizzbuzz/core"
 	ds "github.com/samyy321/fizzbuzz/datastore"
 	models "github.com/samyy321/fizzbuzz/models"
+	"github.com/samyy321/fizzbuzz/service"
 	"log"
 	"net/http"
 	"net/url"
@@ -18,12 +18,12 @@ type Server struct {
 }
 
 func (s *Server) statisticsHandler(w http.ResponseWriter, r *http.Request) {
-	request, err := s.Db.FindByMostUsedQueryString()
+	mostUsedRequest, err := service.GetMostUsedQueryString(s.Db)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	json.NewEncoder(w).Encode(request)
+	json.NewEncoder(w).Encode(mostUsedRequest)
 }
 
 func (s *Server) fizzbuzzHandler(w http.ResponseWriter, r *http.Request) {
@@ -55,15 +55,13 @@ func (s *Server) fizzbuzzHandler(w http.ResponseWriter, r *http.Request) {
 	str1 := params.Get("str1")
 	str2 := params.Get("str2")
 
-	strList, err := core.Fizzbuzz(int1, int2, limit, str1, str2)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	// Store new request
-	// TODO async db store
-	err = s.Db.Store(&models.Request{Int1Param: int1, Int2Param: int2, LimitParam: limit, Str1Param: str1, Str2Param: str2})
+	request := models.Request{
+		Int1Param:  int1,
+		Int2Param:  int2,
+		LimitParam: limit,
+		Str1Param:  str1,
+		Str2Param:  str2}
+	strList, err := service.GetFizzbuzzStrings(s.Db, &request)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
