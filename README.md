@@ -36,4 +36,9 @@ to add a new type of storage
 - `models`contains structures that represents our business objects
 - `server` contains the code to handle the requests to the api
 - `service` contains the code that does the link between the server and the datastore (could be called controller)
-- `tests`
+- `tests` contains the tests
+## What could be improved
+- Adding some logs
+- Not making blocking calls to the database
+- Create a separate table for request parameters to allow adding or removing parameters easily
+Feel free to send me you feedbacks by creating a Github issue.
