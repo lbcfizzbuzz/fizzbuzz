@@ -2,8 +2,8 @@
 A simple fizzbuzz REST server written in Go
 
 ## Prerequisites
-- Go 1.13
-- Docker
+- Go 1.13 (https://golang.org/doc/install)
+- Docker (https://docs.docker.com/install/)
 ## Installation
 Please first install the database given at: https://github.com/samyy321/fizzbuzz_db.
 
@@ -27,3 +27,13 @@ To run the tests just type:
 ```
 $  go test github.com/samyy321/fizzbuzz/tests
 ```
+## Project structure
+- `cmd/fizzbuzz` contains the main
+- `config`contains the server configuration files and the code to read them
+- `core` contains the fizzbuzz algorithm
+- `datastore` contains the code for the communication with a database, there is an interface that can be implemented
+to add a new type of storage
+- `models`contains structures that represents our business objects
+- `server` contains the code to handle the requests to the api
+- `service` contains the code that does the link between the server and the datastore (could be called controller)
+- `tests`
