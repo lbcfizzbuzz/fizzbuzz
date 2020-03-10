@@ -18,38 +18,53 @@ type Server struct {
 	Db     ds.Datastore
 }
 
+// Error represents an error that will be sent to the client
+type Error struct {
+	Message string `json:"message"`
+	Status  int    `json:"status"`
+}
+
 func (s *Server) statisticsHandler(w http.ResponseWriter, r *http.Request) {
-	mostUsedRequest, err := service.GetMostUsedQueryString(s.Db)
+	w.Header().Set("Content-Type", "application/json")
+
+	response, err := service.GetMostUsedQueryString(s.Db)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(Error{Message: err.Error(), Status: http.StatusInternalServerError})
 		return
 	}
-	json.NewEncoder(w).Encode(mostUsedRequest)
+	json.NewEncoder(w).Encode(response)
 }
 
 func (s *Server) fizzbuzzHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
 	params, err := url.ParseQuery(r.URL.RawQuery)
 
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(Error{Message: err.Error(), Status: http.StatusBadRequest})
 		return
 	}
 
 	// Get numeric params
 	int1, err := strconv.ParseUint(params.Get("int1"), 10, 64)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(Error{Message: err.Error(), Status: http.StatusBadRequest})
 		return
 	}
 	int2, err := strconv.ParseUint(params.Get("int2"), 10, 64)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(Error{Message: err.Error(), Status: http.StatusBadRequest})
 		return
 	}
 
 	limit, err := strconv.ParseUint(params.Get("limit"), 10, 32)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(Error{Message: err.Error(), Status: http.StatusBadRequest})
 		return
 	}
 
@@ -64,10 +79,12 @@ func (s *Server) fizzbuzzHandler(w http.ResponseWriter, r *http.Request) {
 		Str2Param:  str2}
 	strList, err := service.GetFizzbuzzStrings(s.Db, &request)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(Error{Message: err.Error(), Status: http.StatusInternalServerError})
 		return
 	}
 
+	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(strList)
 }
 
