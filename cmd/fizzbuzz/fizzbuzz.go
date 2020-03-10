@@ -27,6 +27,13 @@ func main() {
 		return
 	}
 
+	err = config.Validate()
+	if err != nil {
+		fmt.Println(err.Error())
+		fmt.Println("Exiting ...")
+		return
+	}
+
 	// Get the datastore
 	datastore, err := ds.GetDatastore(config)
 	if err != nil {
@@ -42,6 +49,6 @@ func main() {
 	}
 
 	// Launch the server
-	s := serv.Server{Db: datastore}
+	s := serv.Server{Db: datastore, Config: &config}
 	s.Run()
 }

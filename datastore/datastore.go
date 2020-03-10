@@ -15,7 +15,7 @@ type Datastore interface {
 
 // GetDatastore returns a datastore given the type as parameter.
 func GetDatastore(config cfg.Configuration) (Datastore, error) {
-	switch config.DbType {
+	switch config.Datastore {
 	case "mysql":
 		return &MySQLDatastore{Dsn: config.Dsn}, nil
 	default:

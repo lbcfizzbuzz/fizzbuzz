@@ -1,4 +1,5 @@
 {
-    "db_type": "mysql",
-    "dsn": "root:iamsecure@/fizzbuzztest"
+    "datastore": "mysql",
+    "dsn": "root:iamsecure@/fizzbuzztest",
+    "port": 8080
 }

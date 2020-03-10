@@ -2,6 +2,7 @@ package server
 
 import (
 	"encoding/json"
+	conf "github.com/lbcfizzbuzz/fizzbuzz/config"
 	ds "github.com/lbcfizzbuzz/fizzbuzz/datastore"
 	models "github.com/lbcfizzbuzz/fizzbuzz/models"
 	"github.com/lbcfizzbuzz/fizzbuzz/service"
@@ -13,8 +14,8 @@ import (
 
 // Server represents a server listening for requests
 type Server struct {
-	// config *Config
-	Db ds.Datastore
+	Config *conf.Configuration
+	Db     ds.Datastore
 }
 
 func (s *Server) statisticsHandler(w http.ResponseWriter, r *http.Request) {
@@ -74,5 +75,5 @@ func (s *Server) fizzbuzzHandler(w http.ResponseWriter, r *http.Request) {
 func (s *Server) Run() {
 	http.HandleFunc("/fizzbuzz/", s.fizzbuzzHandler)
 	http.HandleFunc("/statistics/", s.statisticsHandler)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe(":"+strconv.Itoa(s.Config.Port), nil))
 }
