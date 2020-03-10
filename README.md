@@ -41,4 +41,5 @@ to add a new type of storage
 - Adding some logs
 - Not making blocking calls to the database
 - Create a separate table for request parameters to allow adding or removing parameters easily
+
 Feel free to send me you feedbacks by creating a Github issue.
