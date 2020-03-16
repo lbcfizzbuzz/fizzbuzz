@@ -14,9 +14,16 @@ $ cd ./cmd/fizzbuzz
 $ go build
 ```
 ## Usage
-Run the fizzbuzz executable, it will use the configuration file `config/config-dev.json` by default.
+Run the fizzbuzz executable by using the default configuration (`config/config-dev.json`):
+```
+$ cd ./fizzbuzz
+```
+Run the fizzbuzz executable and pass a configuration file to it (must be formatted as explained in `config/README.md`):
+```
+$ cd ./fizzbuzz -config "path/to/configuration/file"
+```
 
-You can send requests to the api using the `http://localhost:8080/` url.
+The api accepts requests at the `http://localhost:8080/` url.
 
 The `fizzbuzz` endpoint accepts five parameters, for example `http://localhost:8080/fizzbuzz?int1=3&int2=5&limit=10&str1=fizz&str2=buzz` will do a fizzbuzz from 1 to 10 included.
 
@@ -33,13 +40,12 @@ $  go test github.com/lbcfizzbuzz/fizzbuzz/tests
 - `core` contains the fizzbuzz algorithm
 - `datastore` contains the code for the communication with a database, there is an interface that can be implemented
 to add a new type of storage
+- `internal/constants` contains the constants of the project
 - `models`contains structures that represents our business objects
-- `server` contains the code to handle the requests to the api
-- `service` contains the code that does the link between the server and the datastore (could be called controller)
+- `server` contains the code to handle the clients requests
+- `service` contains the code that does the link between the server and the datastore
 - `tests` contains the tests
 ## What could be improved
-- Adding some logs
-- Not making blocking calls to the database
 - Create a separate table for request parameters to allow adding or removing parameters easily
 
 Feel free to send me you feedbacks by creating a Github issue.
