@@ -1,5 +1,7 @@
 {
     "datastore": "mysql",
     "dsn": "root:iamsecure@/fizzbuzz",
-    "port": 8080
+    "port": 8080,
+    "log_in_json": true,
+    "log_file_path": ""
 }

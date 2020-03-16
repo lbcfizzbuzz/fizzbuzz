@@ -9,9 +9,11 @@ import (
 
 // Configuration represents the configuration of the server
 type Configuration struct {
-	Datastore string `json:"datastore"`
-	Dsn       string `json:"dsn"`
-	Port      int    `json:"port"`
+	Datastore   string `json:"datastore"`
+	Dsn         string `json:"dsn"`
+	Port        int    `json:"port"`
+	LogInJSON   bool   `json:"log_in_json"`
+	LogFilePath string `json:"log_file_path"`
 }
 
 // Read reads the config file passed in param

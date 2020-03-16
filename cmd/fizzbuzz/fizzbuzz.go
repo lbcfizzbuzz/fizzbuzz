@@ -3,9 +3,12 @@ package main
 import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
-	conf "github.com/lbcfizzbuzz/fizzbuzz/config"
+	cfg "github.com/lbcfizzbuzz/fizzbuzz/config"
 	ds "github.com/lbcfizzbuzz/fizzbuzz/datastore"
-	serv "github.com/lbcfizzbuzz/fizzbuzz/server"
+	srv "github.com/lbcfizzbuzz/fizzbuzz/server"
+	log "github.com/sirupsen/logrus"
+	"os"
+	"strconv"
 )
 
 func main() {
@@ -20,7 +23,7 @@ func main() {
 	}
 
 	// Read the configuration file
-	config := conf.Configuration{}
+	config := cfg.Configuration{}
 	if err := config.Read(args.ConfigPath); err != nil {
 		fmt.Println(err.Error())
 		fmt.Println("Exiting ...")
@@ -48,7 +51,30 @@ func main() {
 		return
 	}
 
+	// Get the logger
+	logger := log.New()
+	if config.LogInJSON {
+		logger.SetFormatter(&log.JSONFormatter{})
+	} else {
+		logger.SetFormatter(&log.TextFormatter{})
+	}
+	if config.LogFilePath != "" {
+		f, err := os.OpenFile(config.LogFilePath, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+		if err != nil {
+			fmt.Println(err.Error())
+			fmt.Println("Exiting ...")
+			return
+		}
+		defer f.Close()
+		fmt.Println("Logs will be in file " + config.LogFilePath)
+		logger.SetOutput(f)
+	} else {
+		fmt.Println("Stdout will be used to logs")
+		logger.SetOutput(os.Stdout)
+	}
+
 	// Launch the server
-	s := serv.Server{Db: datastore, Config: &config}
+	s := srv.Server{Db: datastore, Config: &config, Logger: logger}
+	fmt.Println("Launching server listening on port " + strconv.Itoa(config.Port))
 	s.Run()
 }

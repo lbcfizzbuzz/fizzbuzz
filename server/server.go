@@ -2,11 +2,12 @@ package server
 
 import (
 	"encoding/json"
-	conf "github.com/lbcfizzbuzz/fizzbuzz/config"
+	cfg "github.com/lbcfizzbuzz/fizzbuzz/config"
 	ds "github.com/lbcfizzbuzz/fizzbuzz/datastore"
+	"github.com/lbcfizzbuzz/fizzbuzz/internal/constants"
 	models "github.com/lbcfizzbuzz/fizzbuzz/models"
 	"github.com/lbcfizzbuzz/fizzbuzz/service"
-	"log"
+	log "github.com/sirupsen/logrus"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -14,8 +15,9 @@ import (
 
 // Server represents a server listening for requests
 type Server struct {
-	Config *conf.Configuration
+	Config *cfg.Configuration
 	Db     ds.Datastore
+	Logger *log.Logger
 }
 
 // Error represents an error that will be sent to the client
@@ -25,46 +27,60 @@ type Error struct {
 }
 
 func (s *Server) statisticsHandler(w http.ResponseWriter, r *http.Request) {
+	s.Logger.Infoln("received request: " + r.RequestURI)
+
 	w.Header().Set("Content-Type", "application/json")
 
 	response, err := service.GetMostUsedQueryString(s.Db)
 	if err != nil {
+		s.Logger.Errorln(err.Error())
+
 		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(Error{Message: err.Error(), Status: http.StatusInternalServerError})
+		json.NewEncoder(w).Encode(Error{Message: constants.ErrorMostUsedQueryFailed, Status: http.StatusInternalServerError})
 		return
 	}
 	json.NewEncoder(w).Encode(response)
 }
 
 func (s *Server) fizzbuzzHandler(w http.ResponseWriter, r *http.Request) {
+	s.Logger.Infoln("received request: " + r.RequestURI)
+
 	w.Header().Set("Content-Type", "application/json")
 
 	params, err := url.ParseQuery(r.URL.RawQuery)
 
 	if err != nil {
+		s.Logger.Errorln(err.Error())
+
 		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(Error{Message: err.Error(), Status: http.StatusBadRequest})
+		json.NewEncoder(w).Encode(Error{Message: constants.ErrorQueryString, Status: http.StatusBadRequest})
 		return
 	}
 
 	// Get numeric params
 	int1, err := strconv.ParseUint(params.Get("int1"), 10, 64)
 	if err != nil {
+		s.Logger.Errorln(err.Error())
+
 		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(Error{Message: err.Error(), Status: http.StatusBadRequest})
+		json.NewEncoder(w).Encode(Error{Message: constants.ErrorInt1Param, Status: http.StatusBadRequest})
 		return
 	}
 	int2, err := strconv.ParseUint(params.Get("int2"), 10, 64)
 	if err != nil {
+		s.Logger.Errorln(err.Error())
+
 		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(Error{Message: err.Error(), Status: http.StatusBadRequest})
+		json.NewEncoder(w).Encode(Error{Message: constants.ErrorInt2Param, Status: http.StatusBadRequest})
 		return
 	}
 
 	limit, err := strconv.ParseUint(params.Get("limit"), 10, 32)
 	if err != nil {
+		s.Logger.Errorln(err.Error())
+
 		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(Error{Message: err.Error(), Status: http.StatusBadRequest})
+		json.NewEncoder(w).Encode(Error{Message: constants.ErrorLimitParam, Status: http.StatusBadRequest})
 		return
 	}
 
@@ -79,8 +95,10 @@ func (s *Server) fizzbuzzHandler(w http.ResponseWriter, r *http.Request) {
 		Str2Param:  str2}
 	strList, err := service.GetFizzbuzzStrings(s.Db, &request)
 	if err != nil {
+		s.Logger.Errorln(err.Error())
+
 		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(Error{Message: err.Error(), Status: http.StatusInternalServerError})
+		json.NewEncoder(w).Encode(Error{Message: constants.ErrorFizzbuzz, Status: http.StatusInternalServerError})
 		return
 	}
 

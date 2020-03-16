@@ -25,7 +25,6 @@ func GetFizzbuzzStrings(ds datastore.Datastore, request *models.Request) ([]stri
 	}
 
 	// Store new request
-	// TODO async db store
 	err = ds.Store(request)
 	if err != nil {
 		return nil, err
