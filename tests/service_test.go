@@ -2,31 +2,18 @@ package tests
 
 import (
 	_ "github.com/go-sql-driver/mysql"
-	conf "github.com/lbcfizzbuzz/fizzbuzz/config"
-	ds "github.com/lbcfizzbuzz/fizzbuzz/datastore"
 	"github.com/lbcfizzbuzz/fizzbuzz/models"
 	"github.com/lbcfizzbuzz/fizzbuzz/service"
 	"testing"
 )
 
 func TestService(t *testing.T) {
-	// Read the configuration file
-	config := conf.Configuration{}
-	if err := config.Read("../config/config-test.json"); err != nil {
-		t.Errorf(err.Error())
-	}
-
-	// Get the datastore
-	datastore, err := ds.GetDatastore(config)
-	if err != nil {
-		t.Errorf(err.Error())
-	}
-	err = datastore.Init()
+	datastore, err := GetInitializedDatastore()
 	if err != nil {
 		t.Errorf(err.Error())
 	}
 
-	// Create a first request
+	// Create the request
 	request := models.Request{
 		Int1Param:  3,
 		Int2Param:  5,
@@ -34,6 +21,7 @@ func TestService(t *testing.T) {
 		Str1Param:  "fizz",
 		Str2Param:  "buzz"}
 
+	// Use this request to do a fizzbuzz several times
 	for i := 0; i < 3; i++ {
 		_, err := service.GetFizzbuzzStrings(datastore, &request)
 		if err != nil {
@@ -41,7 +29,7 @@ func TestService(t *testing.T) {
 		}
 	}
 
-	// Change the request and use more than the first one
+	// Change the request and use this new version more than the first one
 	request.Int2Param = 6
 	for i := 0; i < 4; i++ {
 		_, err := service.GetFizzbuzzStrings(datastore, &request)
