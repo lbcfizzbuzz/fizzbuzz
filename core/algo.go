@@ -1,33 +1,28 @@
 package core
 
 import (
-	"errors"
 	"strconv"
 )
 
-// Fizzbuzz returns a slice of strings with numbers from 1 to limit included.
-// All multiples of int1 are replaced by str1.
-// All multiples of int2 are replaced by str2.
-// All multiples of int1 and int2 are replaced by str1str2.
-func Fizzbuzz(int1, int2, limit uint64, str1, str2 string) ([]string, error) {
-	if int1 == 0 || int2 == 0 {
-		return nil, errors.New("The int1 and int2 parameters must be greater than 0")
+// Fizzbuzz returns a string containing:
+// - str1 if nb is a multiple of firstDivisor
+// - str2 if nb is a multiple of secondDivisor
+// - a concatenation of str1 and str2 if nb is a multiple of both firstDivisor and secondDivisor
+// - an empty string if the division is impossible
+func Fizzbuzz(nb, firstDivisor, secondDivisor uint64, str1, str2 string) string {
+	result := ""
+	if firstDivisor == 0 || secondDivisor == 0 {
+		return result
 	}
 
-	var result []string
-	for i := uint64(1); i <= limit; i++ {
-		currentStr := ""
-		if i%int1 == 0 {
-			currentStr = str1
-		}
-		if i%int2 == 0 {
-			currentStr += str2
-		}
-		if currentStr == "" {
-			currentStr = strconv.FormatUint(i, 10)
-		}
-		result = append(result, currentStr)
+	if nb%firstDivisor == 0 {
+		result = str1
 	}
-
-	return result, nil
+	if nb%secondDivisor == 0 {
+		result += str2
+	}
+	if result == "" {
+		result = strconv.FormatUint(nb, 10)
+	}
+	return result
 }
