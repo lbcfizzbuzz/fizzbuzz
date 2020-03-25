@@ -26,27 +26,20 @@ func (datastore *MySQLDatastore) Init() error {
 
 // FindByMostUsedQueryString retrieves the most used requests
 func (datastore *MySQLDatastore) FindByMostUsedQueryString() (models.Request, error) {
-	rows, err := datastore.db.Query(`SELECT int1_param, int2_param, limit_param, str1_param, str2_param,
+	request := models.Request{}
+	err := datastore.db.QueryRow(`SELECT int1_param, int2_param, limit_param, str1_param, str2_param,
 										COUNT(id) AS occurrence
 										FROM requests
 										GROUP BY int1_param, int2_param, limit_param, str1_param, str2_param
-										ORDER BY occurrence DESC LIMIT 1`)
-	if err != nil {
-		return models.Request{}, err
-	}
+										ORDER BY occurrence DESC LIMIT 1`).Scan(&request.Int1Param,
+		&request.Int2Param,
+		&request.LimitParam,
+		&request.Str1Param,
+		&request.Str2Param,
+		&request.Count)
 
-	// Fetch rows
-	request := models.Request{}
-	for rows.Next() {
-		err = rows.Scan(&request.Int1Param,
-			&request.Int2Param,
-			&request.LimitParam,
-			&request.Str1Param,
-			&request.Str2Param,
-			&request.Count)
-		if err != nil {
-			return request, err
-		}
+	if err != nil && err != sql.ErrNoRows {
+		return request, err
 	}
 	return request, nil
 }
