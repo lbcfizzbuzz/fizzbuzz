@@ -5,15 +5,15 @@ import (
 	"github.com/lbcfizzbuzz/fizzbuzz/models"
 )
 
-// MySQLDatastore a datastore using a MySQL driver
-type MySQLDatastore struct {
-	Dsn string
+// mySQLDatastore a datastore using a MySQL driver
+type mySQLDatastore struct {
+	dsn string
 	db  *sql.DB
 }
 
 // Init initialize a new connection pool
-func (datastore *MySQLDatastore) Init() error {
-	db, err := sql.Open("mysql", datastore.Dsn)
+func (datastore *mySQLDatastore) Init() error {
+	db, err := sql.Open("mysql", datastore.dsn)
 	if err != nil {
 		return err
 	}
@@ -25,7 +25,7 @@ func (datastore *MySQLDatastore) Init() error {
 }
 
 // FindByMostUsedQueryString retrieves the most used requests
-func (datastore *MySQLDatastore) FindByMostUsedQueryString() (models.Request, error) {
+func (datastore *mySQLDatastore) FindByMostUsedQueryString() (models.Request, error) {
 	request := models.Request{}
 	err := datastore.db.QueryRow(`SELECT int1_param, int2_param, limit_param, str1_param, str2_param,
 										COUNT(id) AS occurrence
@@ -45,7 +45,7 @@ func (datastore *MySQLDatastore) FindByMostUsedQueryString() (models.Request, er
 }
 
 // Store takes a Request as parameter and store it to the database
-func (datastore *MySQLDatastore) Store(request *models.Request) error {
+func (datastore *mySQLDatastore) Store(request *models.Request) error {
 	tx, err := datastore.db.Begin()
 	if err != nil {
 		return err

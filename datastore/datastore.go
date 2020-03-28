@@ -17,7 +17,7 @@ type Datastore interface {
 func GetDatastore(config cfg.Configuration) (Datastore, error) {
 	switch config.Datastore {
 	case "mysql":
-		return &MySQLDatastore{Dsn: config.Dsn}, nil
+		return &mySQLDatastore{dsn: config.Dsn}, nil
 	default:
 		return nil, errors.New("This datastore type is not implemented")
 	}
